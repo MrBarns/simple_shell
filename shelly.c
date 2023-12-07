@@ -50,8 +50,7 @@ int main(int ac, char *av[])
 		if (ret == -1)
 		{
 			free(lineptr);
-			write(STDOUT_FILENO, "logout\n", 7);
-			return (1);
+			exit(EXIT_SUCCESS);
 		}
 		argv[0] = getadd(lineptr);
 		argv[1] = NULL;
