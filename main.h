@@ -14,4 +14,11 @@ extern char **environ;
 
 typedef struct stat stat_t;
 
+int getadd(char **add, char **environ);
+char **getav(char *fileptr, char **environ);
+
+/* String Utils */
+int _strcmp(char *s1, char *s2);
+char *_getenv(char *name, char **environ);
+
 #endif

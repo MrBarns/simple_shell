@@ -1,22 +1,27 @@
 #include "main.h"
 
 
+
 /**
- * getadd - removes newline character from end of input
+ * getav - removes newline character from end of input
+ *
  * @lineptr: string from input stream
+ * @environ: environment vector
  *
  * Return: string without ending newline character
  */
 
-char **getadd(char *lineptr)
+char **getav(char *lineptr, char **environ)
 {
 	int ind, count = 0;
 	char **argv, *arg;
 
-	lineptr = strtok(lineptr, "\n");
-	for (ind = 0; lineptr[ind]; ind++)
+	(void) environ;
+
+	arg = strtok(lineptr, "\n");
+	for (ind = 0; arg[ind]; ind++)
 	{
-		if ((ind) && (lineptr[ind] != ' ') && (lineptr[ind - 1] == ' '))
+		if ((ind) && (arg[ind] != ' ') && (arg[ind - 1] == ' '))
 			count++;
 	}
 	argv = malloc(sizeof(char *) * (count + 2));
@@ -26,13 +31,15 @@ char **getadd(char *lineptr)
 		free(lineptr);
 		exit(EXIT_FAILURE);
 	}
-	for (arg = strtok(lineptr, " "), ind = 0; arg != NULL;
-	     arg = strtok(NULL, " "))
+	/*
+	 *arg = strtok(arg, " ");
+	 *getadd(arg, environ);
+	 */
+	for (ind = 0; ind < 1; ind++)
 	{
 		argv[ind] = arg;
-		ind++;
 	}
-	argv[ind] = arg;
+	argv[ind] = NULL;
 
 	return (argv);
 }
@@ -66,24 +73,28 @@ int main(int ac, char *av[])
 		if (ret == -1)
 		{
 			free(lineptr);
-			write(STDOUT_FILENO, "\n", 1);
+			if (isatty(STDIN_FILENO))
+				write(STDOUT_FILENO, "\n", 1);
 			exit(EXIT_SUCCESS);
 		}
-		argv = getadd(lineptr);
-		child_pid = fork();
-		if (child_pid == 0)
+		if (*lineptr != '\n')
 		{
-			execve(argv[0], argv, environ);
-			perror(av[0]);
-			exit(EXIT_FAILURE);
-		}
-		else
-		{
-			wait(&status);
-			lineptr = NULL;
-			n = 0;
-		}
+			argv = getav(lineptr, environ);
+			child_pid = fork();
+			if (child_pid == 0)
+			{
+				execve(argv[0], argv, environ);
+				perror(av[0]);
+				exit(EXIT_FAILURE);
+			} else
+			{
+				wait(&status);
+				free(lineptr);
+				free(argv);
+				n = 0;
+			}
+		} else
+			write(STDOUT_FILENO, "\n", 1);
 	}
-	free(lineptr);
 	return (0);
 }
