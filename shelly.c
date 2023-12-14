@@ -31,8 +31,8 @@ char **getav(char *lineptr, char **environ)
 		free(lineptr);
 		exit(EXIT_FAILURE);
 	}
+	arg = strtok(arg, " ");
 	/*
-	 *arg = strtok(arg, " ");
 	 *getadd(arg, environ);
 	 */
 	for (ind = 0; ind < 1; ind++)
