@@ -19,13 +19,13 @@ char **getav(char *lineptr, char **environ)
 	(void) environ;
 
 	arg = strtok(lineptr, "\n");
-	/*
-	 *for (ind = 0; arg[ind]; ind++)
-	 *{
-	 *	if ((ind) && (arg[ind] != ' ') && (arg[ind - 1] == ' '))
-	 *		count++;
-	 *}
-	*/
+
+	for (ind = 0; arg[ind]; ind++)
+	{
+		if ((ind) && (arg[ind] != ' ') && (arg[ind - 1] == ' '))
+			count++;
+	}
+
 	argv = malloc(sizeof(char *) * (count + 2));
 	if (!argv)
 	{
@@ -39,9 +39,17 @@ char **getav(char *lineptr, char **environ)
 	 */
 	if (arg != NULL)
 	{
-		for (ind = 0; ind < 1; ind++)
+		if (arg[0] == '.')
 		{
-			argv[ind] = arg;
+			for (ind = 0; arg; ind++)
+			{
+				argv[ind] = arg;
+				arg = strtok(NULL, " ");
+			}
+		} else
+		{
+			for (ind = 0; ind < 1; ind++)
+				argv[ind] = arg;
 		}
 		argv[ind] = NULL;
 
