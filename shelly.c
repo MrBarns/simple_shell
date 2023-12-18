@@ -52,6 +52,7 @@ char **getav(char *lineptr, char **environ)
 		return (argv);
 	}
 
+	free(argv);
 	return (NULL);
 }
 
