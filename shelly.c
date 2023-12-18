@@ -17,15 +17,12 @@ char **getav(char *lineptr, char **environ)
 	char **argv, *arg;
 
 	(void) environ;
-
 	arg = strtok(lineptr, "\n");
-
 	for (ind = 0; arg[ind]; ind++)
 	{
 		if ((ind) && (arg[ind] != ' ') && (arg[ind - 1] == ' '))
 			count++;
 	}
-
 	argv = malloc(sizeof(char *) * (count + 2));
 	if (!argv)
 	{
@@ -52,10 +49,8 @@ char **getav(char *lineptr, char **environ)
 				argv[ind] = arg;
 		}
 		argv[ind] = NULL;
-
 		return (argv);
 	}
-
 	free(argv);
 	return (NULL);
 }
@@ -120,12 +115,11 @@ int main(int ac, char *av[])
 					perror(av[0]);
 					exit(EXIT_FAILURE);
 				} else
-				{
 					wait(&status);
-					free(lineptr);
-					free(argv);
-				}
 			}
+			free(lineptr);
+			free(argv);
+
 		}
 	}
 	return (0);
