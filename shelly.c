@@ -17,7 +17,6 @@ char **getav(char *lineptr, char **environ)
 	char **argv, *arg;
 
 	(void) environ;
-
 	arg = strtok(lineptr, "\n");
 	for (ind = 0; arg[ind]; ind++)
 	{
@@ -37,10 +36,17 @@ char **getav(char *lineptr, char **environ)
 	 */
 	if (arg != NULL)
 	{
-		for (ind = 0; arg; ind++)
+		if (arg[0] == '.')
 		{
-			argv[ind] = arg;
-			arg = strtok(NULL, " ");
+			for (ind = 0; arg; ind++)
+			{
+				argv[ind] = arg;
+				arg = strtok(NULL, " ");
+			}
+		} else
+		{
+			for (ind = 0; ind < 1; ind++)
+				argv[ind] = arg;
 		}
 		argv[ind] = NULL;
 		return (argv);
